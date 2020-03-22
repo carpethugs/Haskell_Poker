@@ -5,8 +5,8 @@ module Poker where
 
     -- getCard(Card Suit Val) = 
 
-
     deal cards =  
+       
 
     -- List shifting (simple notation is the notation provide by the prof, standard notation is the one we will be working on in this program)
     shiftToSimpleNotationFunc x = do
@@ -22,9 +22,15 @@ module Poker where
     suit x = mod x 13
     value x = div x 13
 
-    sortByVal hand = do
-        
+    
 
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+--Daniels Side
+
+    sortByVal hand = do
+    
+    getHands cards = do
+    
     --Tie breaker funcs
     highestRank h1 h2 = do 
         if (value (last h1)) == (value (last h2)) then highestRank (tail h1) (tail h1)
