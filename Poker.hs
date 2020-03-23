@@ -139,6 +139,11 @@ module Poker where
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 --Daniels Side
 
+    -- handToString hand = do
+
+    -- cardToString card = do
+    --     let suits = ["C","D","H","S"]
+
 
     sortByVal hand = sortBy (\a b -> compare ((value) a) ((value) b)) hand
     sortBySuit2 hand = sortBy(\a b -> compare ((suit) a) ((suit) b)) hand
@@ -147,6 +152,19 @@ module Poker where
         if null cards then [(reverse)h1,(reverse)h2]
         else if mod (length cards) 2 == 0 then (getHands ((tail) cards) ((head cards) : h1) h2)
         else getHands ((tail) cards) h1 ((head cards) : h2)
+
+    tieBreaker h1 h2 tieVal= do
+        case tieVal of
+            0 -> highestRank h1 h2
+            1 -> highestRank h1 h2
+            2 -> tieThreePlus h1 h2
+            3 -> tieThreePlus h1 h2
+            4 -> highestRank h1 h2
+            5 -> highestRank h1 h2
+            6 -> tieThreePlus h1 h2
+            7 -> tieTwoPairs h1 h2
+            8 -> tiePair h1 h2
+            _ -> highestRank h1 h2
 
 
     --Tie breaker funcs
@@ -161,7 +179,17 @@ module Poker where
             else if v1 > v2 then reverse h1
             else reverse h2
 
-    highestSuit h1 h2 = [1]
+    highestSuit h1 h2 = do
+        let sh1 = sortBySuit2 h1
+        let sh2 = sortBySuit2 h2
+        highestSuitRev ((reverse) h1) ((reverse) h2) ((reverse) h1) ((reverse) h2)
+
+    highestSuitRev h1 h2 a b= do
+        let v1 =(suit (head a))
+        let v2 = (suit (head b)) 
+        if v1 == v2  then highestSuitRev h1 h2 (tail a) (tail b)
+        else if v1 > v2 then reverse h1
+        else reverse h2
 
     tieThreePlus h1 h2 = do 
         if (h1 !! 2) > (h2 !! 2) then h1
@@ -178,9 +206,16 @@ module Poker where
         else if av1 < bv1 then h2
         else highestSuit h1 h2
     
-    -- tiePair h1 h2 = do 
+    tiePair h1 h2 = do
+        let v1 = getPairVal h1
+        let v2 = getPairVal h2
+        if v1 > v2 then h1
+        else if v1 < v2 then h2
+        else highestRank h1 h2
+         
+    getPairVal hand = getPairValHelp ((sortByVal) hand) (-1)
 
-    getPairVal hand currentVal = do
-        if null hand then -1
+    getPairValHelp hand currentVal = do
+        if null hand then (-1)
         else if value (head hand) == currentVal then currentVal
-        else getPairVal ((tail) hand) (value(head hand)) 
+        else getPairValHelp ((tail) hand) (value(head hand)) 
