@@ -7,10 +7,11 @@ module Poker where
         let h2 = shiftToSimpleNotation(last hands)
         let v1 = determineHandType h1
         let v2 = determineHandType h2
-        if v1 > v2 then handToString (shiftToStandardNotation h1)
-        else if v1 < v2 then handToString (shiftToStandardNotation h2)
-        else handToString (shiftToStandardNotation(tieBreaker h1 h2 v1))
+        if v1 < v2 then formatOut h1
+        else if v1 > v2 then formatOut h2
+        else formatOut(tieBreaker h1 h2 v1)
 
+    formatOut hand = handToString(sortByVal(shiftToStandardNotation hand))
     --work on this later ->>> deal cards =  
     
     -- List shifting (simple notation is the notation provide by the prof, standard notation is the one we will be working on in this program)
@@ -25,7 +26,9 @@ module Poker where
     
     --card operations (assumes standard notation)
     suit x = div x 13
-    value x = mod x 13
+    value x = do
+        if mod x 13 == 0 then 13
+        else mod x 13
 
     {-
     Royal flush = 0
@@ -150,8 +153,7 @@ module Poker where
         else cardToString (head hand) : handToString (tail hand)
 
     cardToString card = do
-        if value card == 0 then (getSuitString card) ++ show(13)
-        else (getSuitString card) ++ show(value card)
+        (getSuitString card) ++ show(value card)
         
     getSuitString card = do
         let suits = ["C","D","H","S"]
