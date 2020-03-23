@@ -1,4 +1,5 @@
 module Poker where
+    import Data.List
     
     -- deal cards =  
 
@@ -18,43 +19,8 @@ module Poker where
     --card operations (assumes standard notation)
     suit x = div x 13
     value x = mod x 13
-    value x = mod x 13
-    suit x = div x 13
 
-    {-
-    Royal flush = 0
-    straight flush = 1
-    four of a kind = 2
-    full house = 3
-    flush = 4
-    straigh = 5
-    three of a kind =6
-    two pair = 7
-    one pair = 8
-    high card = 9
-    -}
-    determineHandType hand = do
-        if ( isRoyalFlush hand ) then 0
-        else 9
-    
-    isRoyalFlush hand = do
-        if ( isStraightFlush hand && containsValueWithFunc hand 12 value) then True
-        else False
-
-    isStraightFlush hand = do
-        if( isStraight hand && isFlush hand ) then True
-        else False
-    
-    isStraight hand = do
-        let handByValue = sortHandByMethod hand [] sortByValue
-        isDescendingFrom ((tail) handByValue) ((head) handByValue)
-    
-    isDescendingFrom hand desFrom
-        | null hand = True
-        | not (value ((head) hand) == ((value) desFrom) - 1) = False  
-        | otherwise = isDescendingFrom ((tail) hand) ((head) hand)
-    
-
+   
     ---------------Helper functions-------------------
 
     --hand is the list that you are serching
@@ -90,8 +56,9 @@ module Poker where
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 --Daniels Side
 
-    sortByVal hand = do
 
+    sortByVal hand = sortBy (\a b -> compare ((value) a) ((value) b)) hand
+    sortBySuit hand = sortBy(\a b -> compare ((suit) a) ((suit) b)) hand
     
     getHands cards h1 h2 = do
         if null cards then [(reverse)h1,(reverse)h2]
