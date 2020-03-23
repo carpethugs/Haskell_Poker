@@ -35,6 +35,14 @@ module Poker where
     -}
     determineHandType hand = do
         if ( isRoyalFlush hand ) then 0
+        else if ( isStraightFlush hand ) then 1
+        else if ( isFourOfAKind hand ) then 2
+        else if ( isFullHouse hand ) then 3
+        else if ( isFlush hand ) then 4
+        else if ( isStraight hand ) then 5
+        else if ( isThreeOfAKind hand ) then 6
+        else if ( isDoublePair hand ) then 7
+        else if ( isSinglePair hand ) then 8
         else 9
     
     isRoyalFlush hand = do
@@ -44,8 +52,10 @@ module Poker where
     isStraightFlush hand = do
         if( isStraight hand && isFlush hand ) then True
         else False
-    --temp
-    isFlush hand = False
+    
+    isFlush hand = do
+        let suitToCheck = suit ((head)hand)
+        elementRepeatExact hand suitToCheck suit 5
 
     isStraight hand = do
         let aceLow = map (\x -> if value x == 12 then x -12 else x+1) hand
@@ -61,7 +71,22 @@ module Poker where
         | not (value ((head) hand) == ((value) desFrom) - 1) = False  
         | otherwise = isDescendingFrom ((tail) hand) ((head) hand)
     
+    isFourOfAKind hand = anyElementRepeats hand value 4 0 --the 4 because looking for a four of a kind
 
+    isFullHouse hand = anyElementRepeats hand value 3 0 && anyElementRepeats hand value 2 0
+
+    isThreeOfAKind hand = anyElementRepeats hand value 3 0
+
+    isDoublePair hand = isDoublePairHelper hand value 2 0
+
+    isDoublePairHelper hand func number tempIndex
+        | tempIndex == length hand = False--5 because that is the size of a hand
+        | elementRepeatExact hand (hand !! tempIndex) func number = do
+            let filteredHand = removeAllCardsByFaceValue hand (hand !! tempIndex) []
+            anyElementRepeats filteredHand value 2 0
+        | otherwise = anyElementRepeats hand func number (tempIndex+1)
+
+    isSinglePair hand = anyElementRepeats hand value 2 0
     ---------------Helper functions-------------------
 
     --hand is the list that you are serching
@@ -96,7 +121,20 @@ module Poker where
 
     elementRepeatExact hand element func number
         | null hand = (number == 0)
-        | otherwise = if func ((head) hand) == func element then elementRepeatExact ((tail)hand) element func (number -1) else  elementRepeatExact ((tail)hand) element func (number -1)  
+        | otherwise = if func ((head) hand) == func element then elementRepeatExact ((tail)hand) element func (number -1) else  elementRepeatExact ((tail)hand) element func number  
+
+    --number is the repeat amount that you are looking for
+    --just set temp index to zero (it is used to keep track of where you currently are)
+    anyElementRepeats hand func number tempIndex
+        | tempIndex == length hand = False
+        | elementRepeatExact hand (hand !! tempIndex) func number = True
+        | otherwise = anyElementRepeats hand func number (tempIndex+1)
+
+    --Note that this function will return an array is reversed order
+    removeAllCardsByFaceValue hand faceValue returnHand = do
+        if( null hand ) then returnHand
+        else if(value ((head) hand) == value faceValue) then removeAllCardsByFaceValue ((tail) hand) faceValue returnHand
+        else removeAllCardsByFaceValue ((tail) hand) faceValue (((head) hand):returnHand)
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 --Daniels Side
