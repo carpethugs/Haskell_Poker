@@ -101,7 +101,7 @@ module Poker where
 
 
     sortByVal hand = sortBy (\a b -> compare ((value) a) ((value) b)) hand
-    sortBySuit hand = sortBy(\a b -> compare ((suit) a) ((suit) b)) hand
+    sortBySuit2 hand = sortBy(\a b -> compare ((suit) a) ((suit) b)) hand
     
     getHands cards h1 h2 = do
         if null cards then [(reverse)h1,(reverse)h2]
@@ -139,3 +139,7 @@ module Poker where
         else highestSuit h1 h2
     
     -- tiePair h1 h2 = do 
+
+    getPairVal hand currentVal = do
+        if head hand == currentVal then currentVal
+        else getPairVal ((tail) hand) head hand 
