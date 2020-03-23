@@ -44,14 +44,16 @@ module Poker where
     isStraightFlush hand = do
         if( isStraight hand && isFlush hand ) then True
         else False
-    
+    --temp
+    isFlush hand = False
+
     isStraight hand = do
         let aceLow = map (\x -> if value x == 12 then x -12 else x+1) hand
         if(isStraightCheck hand || isStraightCheck aceLow ) then True
         else False
     --isStraight sub method
     isStraightCheck hand = do
-        let handByValue = sortHandByMethod hand [] sortByValue
+        let handByValue = sortHandByMethod hand [] sortByValueFirst
         isDescendingFrom ((tail) handByValue) ((head) handByValue)
     --isStraight sub method
     isDescendingFrom hand desFrom
@@ -71,13 +73,13 @@ module Poker where
         | otherwise = containsValueWithFunc ((tail) hand) value func
     
     --returns true is card1 is larger or equal to card 2(same for sort by suit)
-    sortByValue card1 card2 = do
+    sortByValueFirst card1 card2 = do
         if value card1 > value card2 then True
         else if value card1 < value card2 then False
         else if suit card1 < suit card2 then False
         else True
 
-    sortBySuit card1 card2 = do
+    sortBySuitFirst card1 card2 = do
         if suit card1 > suit card2 then True
         else if suit card1 < suit card2 then False
         else if value card1 < value card2 then False
