@@ -1,11 +1,8 @@
 module Poker where
     
-<<<<<<< HEAD
     -- deal cards =  
-=======
 
     --work on this later ->>> deal cards =  
->>>>>>> e04021f38084a6621b4e9cfbcce2247a4c1f39cf
        
 
     -- List shifting (simple notation is the notation provide by the prof, standard notation is the one we will be working on in this program)
@@ -19,10 +16,8 @@ module Poker where
     shiftToStandardNotation list = map shiftToStandardNotationFunc list
     
     --card operations (assumes standard notation)
-<<<<<<< HEAD
     suit x = div x 13
     value x = mod x 13
-=======
     value x = mod x 13
     suit x = div x 13
 
@@ -91,7 +86,6 @@ module Poker where
             let partiallySorted = (sorted) ++ [eleToSwapDown,eleToSwapUp] ++ (tail ((tail) unsorted))
             sortHandByMethod partiallySorted [] func
         | otherwise = sortHandByMethod (tail unsorted) (sorted ++ [((head) unsorted)]) func
->>>>>>> e04021f38084a6621b4e9cfbcce2247a4c1f39cf
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 --Daniels Side
