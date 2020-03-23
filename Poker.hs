@@ -143,5 +143,6 @@ module Poker where
     -- tiePair h1 h2 = do 
 
     getPairVal hand currentVal = do
-        if head hand == currentVal then currentVal
-        else getPairVal ((tail) hand) head hand 
+        if null hand then -1
+        else if value (head hand) == currentVal then currentVal
+        else getPairVal ((tail) hand) (value(head hand)) 
