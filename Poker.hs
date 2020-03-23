@@ -150,8 +150,13 @@ module Poker where
         else cardToString (head hand) : handToString (tail hand)
 
     cardToString card = do
+        if value card == 0 then (getSuitString card) ++ show(13)
+        else (getSuitString card) ++ show(value card)
+        
+    getSuitString card = do
         let suits = ["C","D","H","S"]
-        (suits !! (suit card)) ++ show(value card)
+        if suit card == 4 then suits !! (3)
+        else suits !! (suit card)
 
     sortByVal hand = sortBy (\a b -> compare ((value) a) ((value) b)) hand
     sortBySuit2 hand = sortBy(\a b -> compare ((suit) a) ((suit) b)) hand
