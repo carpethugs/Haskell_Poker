@@ -1,4 +1,5 @@
 module Poker where
+    import Data.List
     
 
     -- deal cards =  
@@ -17,8 +18,8 @@ module Poker where
     shiftToStandardNotation list = map shiftToStandardNotationFunc list
     
     --card operations (assumes standard notation)
-    value x = mod x 13
     suit x = div x 13
+    value x = mod x 13
 
     {-
     Royal flush = 0
@@ -98,8 +99,9 @@ module Poker where
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 --Daniels Side
 
-    sortByVal hand = do
 
+    sortByVal hand = sortBy (\a b -> compare ((value) a) ((value) b)) hand
+    sortBySuit hand = sortBy(\a b -> compare ((suit) a) ((suit) b)) hand
     
     getHands cards h1 h2 = do
         if null cards then [(reverse)h1,(reverse)h2]
