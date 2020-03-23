@@ -1,12 +1,18 @@
 module Poker where
     import Data.List
     
-
-    -- deal cards =  
+    deal cards =  do
+        let hands = getHands cards
+        let h1 = shiftToSimpleNotation(head hands)
+        let h2 = shiftToSimpleNotation(last hands)
+        let v1 = determineHandType h1
+        let v2 = determineHandType h2
+        if v1 > v2 then handToString (shiftToStandardNotation h1)
+        else if v1 < v2 then handToString (shiftToStandardNotation h2)
+        else handToString (shiftToStandardNotation(tieBreaker h1 h2 v1))
 
     --work on this later ->>> deal cards =  
-       
-
+    
     -- List shifting (simple notation is the notation provide by the prof, standard notation is the one we will be working on in this program)
     shiftToSimpleNotationFunc x = do
         if suit x ==  1 then x+11
@@ -150,12 +156,16 @@ module Poker where
     sortByVal hand = sortBy (\a b -> compare ((value) a) ((value) b)) hand
     sortBySuit2 hand = sortBy(\a b -> compare ((suit) a) ((suit) b)) hand
     
-    getHands cards h1 h2 = do
-        if null cards then [(reverse)h1,(reverse)h2]
-        else if mod (length cards) 2 == 0 then (getHands ((tail) cards) ((head cards) : h1) h2)
-        else getHands ((tail) cards) h1 ((head cards) : h2)
+    getHands cards = getHandsHelp cards [] []
 
-    tieBreaker h1 h2 tieVal= do
+    getHandsHelp cards h1 h2 = do
+        if null cards then [(reverse)h1,(reverse)h2]
+        else if mod (length cards) 2 == 0 then (getHandsHelp ((tail) cards) ((head cards) : h1) h2)
+        else getHandsHelp ((tail) cards) h1 ((head cards) : h2)
+
+    tieBreaker a b tieVal= do
+        let h1 = sortByVal a
+        let h2 = sortByVal b
         case tieVal of
             0 -> highestRank h1 h2
             1 -> highestRank h1 h2
