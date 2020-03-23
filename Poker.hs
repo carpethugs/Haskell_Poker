@@ -139,11 +139,13 @@ module Poker where
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 --Daniels Side
 
-    -- handToString hand = do
+    handToString hand = do
+        if null hand then []
+        else cardToString (head hand) : handToString (tail hand)
 
-    -- cardToString card = do
-    --     let suits = ["C","D","H","S"]
-
+    cardToString card = do
+        let suits = ["C","D","H","S"]
+        (suits !! (suit card)) ++ show(value card)
 
     sortByVal hand = sortBy (\a b -> compare ((value) a) ((value) b)) hand
     sortBySuit2 hand = sortBy(\a b -> compare ((suit) a) ((suit) b)) hand
