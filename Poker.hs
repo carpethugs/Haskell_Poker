@@ -45,9 +45,14 @@ module Poker where
         else False
     
     isStraight hand = do
+        let aceLow = map (\x -> if value x == 12 then x -12 else x+1) hand
+        if(isStraightCheck hand || isStraightCheck aceLow ) then True
+        else False
+    --isStraight sub method
+    isStraightCheck hand = do
         let handByValue = sortHandByMethod hand [] sortByValue
         isDescendingFrom ((tail) handByValue) ((head) handByValue)
-    
+    --isStraight sub method
     isDescendingFrom hand desFrom
         | null hand = True
         | not (value ((head) hand) == ((value) desFrom) - 1) = False  
@@ -85,10 +90,10 @@ module Poker where
             let partiallySorted = (sorted) ++ [eleToSwapDown,eleToSwapUp] ++ (tail ((tail) unsorted))
             sortHandByMethod partiallySorted [] func
         | otherwise = sortHandByMethod (tail unsorted) (sorted ++ [((head) unsorted)]) func
-<<<<<<< HEAD
 
-=======
->>>>>>> 4939f3e311ee6afebd28227a5768b85587bc6d6f
+    elementRepeatExact hand element func number
+        | null hand = (number == 0)
+        | otherwise = if func ((head) hand) == func element then elementRepeatExact ((tail)hand) element func (number -1) else  elementRepeatExact ((tail)hand) element func (number -1)  
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 --Daniels Side
