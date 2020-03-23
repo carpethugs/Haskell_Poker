@@ -1,6 +1,7 @@
 module Poker where
     import Data.List
     
+
     -- deal cards =  
 
     --work on this later ->>> deal cards =  
@@ -52,6 +53,10 @@ module Poker where
             let partiallySorted = (sorted) ++ [eleToSwapDown,eleToSwapUp] ++ (tail ((tail) unsorted))
             sortHandByMethod partiallySorted [] func
         | otherwise = sortHandByMethod (tail unsorted) (sorted ++ [((head) unsorted)]) func
+<<<<<<< HEAD
+
+=======
+>>>>>>> 4939f3e311ee6afebd28227a5768b85587bc6d6f
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 --Daniels Side
