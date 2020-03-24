@@ -13,6 +13,19 @@ module Poker where
 
     --work on this later ->>> deal cards =  
     
+    runTestCases = do
+        let testCases = [[1,2,3,4,5,6,7,8,9,10],[1,2,3,4,5,6,7,8,9,10],[1,12,13,4,5,6,7,8,11,10]]
+        let answerKey = [["1C","3C","5C","7C","9C"],["1C","3C","5C","7C","9C"],["1C","3C","5C","7C","9C"]]
+        checkTestCases testCases answerKey [] []
+        
+    checkTestCases test answer failed passed
+        | null test = [passed, failed]
+        | otherwise = do
+            let input = head test
+            let output =  head answer
+            if ( deal input == output ) then checkTestCases ((tail) test) ((tail) answer) failed (passed ++ [input])
+            else checkTestCases ((tail) test) ((tail) answer) (failed ++ [input]) passed
+
     -- List shifting (simple notation is the notation provide by the prof, standard notation is the one we will be working on in this program)
     shiftToSimpleNotationFunc x = do
         if suit x ==  1 then x+11
