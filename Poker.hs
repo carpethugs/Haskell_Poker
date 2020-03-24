@@ -7,10 +7,11 @@ module Poker where
         let h2 = shiftToSimpleNotation(last hands)
         let v1 = determineHandType h1
         let v2 = determineHandType h2
-        if v1 > v2 then handToString (shiftToStandardNotation h1)
-        else if v1 < v2 then handToString (shiftToStandardNotation h2)
-        else handToString (shiftToStandardNotation(tieBreaker h1 h2 v1))
+        if v1 < v2 then formatOut h1
+        else if v1 > v2 then formatOut h2
+        else formatOut(tieBreaker h1 h2 v1)
 
+    formatOut hand = handToString(sortByVal(shiftToStandardNotation hand))
     --work on this later ->>> deal cards =  
     
     runTestCases = do
@@ -28,17 +29,19 @@ module Poker where
 
     -- List shifting (simple notation is the notation provide by the prof, standard notation is the one we will be working on in this program)
     shiftToSimpleNotationFunc x = do
-        if suit x ==  1 then x+11
+        if value x ==  1 then x+11
         else x-2
     shiftToSimpleNotation list = map shiftToSimpleNotationFunc list
     shiftToStandardNotationFunc x = do
-        if suit x == 12 then x-11
+        if value x == 12 then x-11
         else x+2
     shiftToStandardNotation list = map shiftToStandardNotationFunc list
     
     --card operations (assumes standard notation)
     suit x = div x 13
-    value x = mod x 13
+    value x = do
+        if mod x 13 == 0 then 13
+        else mod x 13
 
     {-
     Royal flush = 0
@@ -163,8 +166,12 @@ module Poker where
         else cardToString (head hand) : handToString (tail hand)
 
     cardToString card = do
+       show(value card) ++ (getSuitString card)
+        
+    getSuitString card = do
         let suits = ["C","D","H","S"]
-        (suits !! (suit card)) ++ show(value card)
+        if suit card == 4 then suits !! (3)
+        else suits !! (suit card)
 
     sortByVal hand = sortBy (\a b -> compare ((value) a) ((value) b)) hand
     sortBySuit2 hand = sortBy(\a b -> compare ((suit) a) ((suit) b)) hand
@@ -216,6 +223,7 @@ module Poker where
         else if v1 > v2 then reverse h1
         else reverse h2
 
+    --Works for threepair, four of a kind and full house
     tieThreePlus h1 h2 = do 
         if (h1 !! 2) > (h2 !! 2) then h1
         else h2
