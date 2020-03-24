@@ -39,9 +39,7 @@ module Poker where
     
     --card operations (assumes standard notation)
     suit x = div x 13
-    value x = do
-        if mod x 13 == 0 then 13
-        else mod x 13
+    value x = mod x 13
 
     {-
     Royal flush = 0
