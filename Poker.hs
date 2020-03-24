@@ -153,7 +153,7 @@ module Poker where
         else cardToString (head hand) : handToString (tail hand)
 
     cardToString card = do
-        (getSuitString card) ++ show(value card)
+       show(value card) ++ (getSuitString card)
         
     getSuitString card = do
         let suits = ["C","D","H","S"]
@@ -210,6 +210,7 @@ module Poker where
         else if v1 > v2 then reverse h1
         else reverse h2
 
+    --Works for threepair, four of a kind and full house
     tieThreePlus h1 h2 = do 
         if (h1 !! 2) > (h2 !! 2) then h1
         else h2
