@@ -11,7 +11,7 @@ module Poker where
         else if v1 > v2 then formatOut h2
         else formatOut(tieBreaker h1 h2 v1)
 
-    formatOut hand = handToString(sortByVal(shiftToStandardNotation hand))
+    formatOut hand = sort(handToString(shiftToStandardNotation hand))
     --work on this later ->>> deal cards =  
     
     runTestCases = do
@@ -75,7 +75,15 @@ module Poker where
         if( isStraight hand && isFlush hand ) then True
         else False
     
-    isFlush hand = do elementRepeatExact hand ((head)hand) suit 5
+    isFlushOld hand = do elementRepeatExact hand ((head)hand) suit 5
+    
+    isFlush hand = do
+        flushHelper ((tail)hand) (suit((head) hand))
+    
+    flushHelper hand val = do
+        if null hand then True
+        else if suit(head hand) == val then flushHelper ((tail) hand) (val)
+        else False
 
     isStraight hand = do
         let aceLow = map (\x -> if value x == 12 then x -12 else x+1) hand
