@@ -209,7 +209,7 @@ module Poker where
     highestRank h1 h2 = do
          let aceLowH1 = map (\x -> if value x == 12 then x -12 else x+1) h1
          let aceLowH2 = map (\x -> if value x == 12 then x -12 else x+1) h2
-         if (isStraight h1 && not(isRoyalFlush h1)) then highRankHelper aceLowH1 aceLowH2
+         if (isStraight h1 && not(isRoyalFlush h1)) then  map (\x -> if value x == 0 then x +12 else x-1) (highRankHelper aceLowH1 aceLowH2)
          else highRankHelper h1 h2
 
     highRankHelper h1 h2 = highestRankRev ((reverse) h1) ((reverse) h2) ((reverse) h1) ((reverse) h2)
