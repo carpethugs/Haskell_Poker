@@ -169,10 +169,10 @@ module Poker where
 
     handToString hand = do
         if null hand then []
-        else cardToString (head hand) : handToString (tail hand)
+        else cardToString (head hand) : handToString (tail hand) 
 
     cardToString card = do
-       show(value card) ++ (getSuitString card)
+       show((value (card-1))+1) ++ (getSuitString (card-1))
         
     getSuitString card = do
         let suits = ["C","D","H","S"]
