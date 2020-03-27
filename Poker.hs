@@ -68,7 +68,7 @@ module Poker where
         else 9
     
     isRoyalFlush hand = do
-        if ( isStraightFlush hand && containsValueWithFunc hand 12 value) then True
+        if ( isStraightFlush hand && isFlush hand && containsValueWithFunc hand 12 value && containsValueWithFunc hand 11 value) then True
         else False
 
     isStraightFlush hand = do
@@ -76,7 +76,7 @@ module Poker where
         else False
     
     isFlushOld hand = do elementRepeatExact hand ((head)hand) suit 5
-    
+
     isFlush hand = do
         flushHelper ((tail)hand) (suit((head) hand))
     
