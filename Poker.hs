@@ -14,6 +14,19 @@ module Poker where
     formatOut hand = sort(handToString(shiftToStandardNotation hand))
     --work on this later ->>> deal cards =  
     
+    runTestCases = do
+        let testCases = [[15, 22, 18, 49, 17, 48, 16, 9, 14, 35],[14, 35, 18, 49, 16, 22, 17, 48, 15, 9],[17, 47, 3, 48, 32, 46, 31, 10, 2, 24],[31, 46, 17, 48, 2, 47, 32, 24, 3, 10],[13, 49, 8, 28, 41, 51, 7, 29, 6, 47],[8, 49, 13, 47, 7, 28, 6, 29, 41, 51],[16, 38, 15, 52, 18, 51, 14, 39, 17, 26],[17, 51, 14, 52, 16, 39, 15, 26, 18, 38],[15, 22, 18, 49, 17, 48, 16, 9, 14, 35],[14, 35, 18, 49, 16, 22, 17, 48, 15, 9],[17, 47, 3, 48, 32, 46, 31, 10, 2, 24],[31, 46, 17, 48, 2, 47, 32, 24, 3, 10],[13, 49, 8, 28, 41, 51, 7, 29, 6, 47],[8, 49, 13, 47, 7, 28, 6, 29, 41, 51],[16, 38, 15, 52, 18, 51, 14, 39, 17, 26],[17, 51, 14, 52, 16, 39, 15, 26, 18, 38]]
+        let answerKey = [["10S", "9C", "9D", "9H", "9S"],["10S", "9C", "9D", "9H", "9S"],["2C", "3C", "4D", "5H", "6H"],["2C", "3C", "4D", "5H", "6H"],["10S", "12S", "2H", "3H", "8S"],["10S", "12S", "2H", "3H", "8S"],["12H", "12S", "13D", "13H", "13S"],["12H", "12S", "13D", "13H", "13S"],["10S", "9C", "9D", "9H", "9S"],["10S", "9C", "9D", "9H", "9S"],["2C", "3C", "4D", "5H", "6H"],["2C", "3C", "4D", "5H", "6H"],["10S", "12S", "2H", "3H", "8S"],["10S", "12S", "2H", "3H", "8S"],["12H", "12S", "13D", "13H", "13S"],["12H", "12S", "13D", "13H", "13S"]]
+        checkTestCases testCases answerKey [] []
+        
+    checkTestCases test answer failed passed
+        | null test = [passed, failed]
+        | otherwise = do
+            let input = head test
+            let output =  head answer
+            if ( deal input == output ) then checkTestCases ((tail) test) ((tail) answer) failed (passed ++ [input])
+            else checkTestCases ((tail) test) ((tail) answer) (failed ++ [input]) passed
+
     -- List shifting (simple notation is the notation provide by the prof, standard notation is the one we will be working on in this program)
     shiftToSimpleNotationFunc x = do
         if value x ==  1 then x+11
