@@ -87,8 +87,8 @@ module Poker where
 
     isStraight hand = do
         let aceLow = map (\x -> if value x == 12 then x -12 else x+1) hand
-        (isStraightCheck2 (tail hand) (head hand) || isStraightCheck2 (tail aceLow) (head aceLow) )
-        
+        if(isStraightCheck hand || isStraightCheck aceLow ) then True
+        else False
     --isStraight sub method
     isStraightCheck hand = do
         let handByValue = sortHandByMethod hand [] sortByValueFirst
@@ -98,12 +98,7 @@ module Poker where
         | null hand = True
         | not (value ((head) hand) == ((value) desFrom) - 1) = False  
         | otherwise = isDescendingFrom ((tail) hand) ((head) hand)
-
-    isStraightCheck2 hand val= do
-        if null hand then True
-        else if ((head) hand) == (val+1) then isStraightCheck2 (sortByVal (tail hand)) ((head) hand)
-        else False
-
+    
     isFourOfAKind hand = anyElementRepeats hand value 4 0 --the 4 because looking for a four of a kind
 
     isFullHouse hand = anyElementRepeats hand value 3 0 && anyElementRepeats hand value 2 0
@@ -209,12 +204,14 @@ module Poker where
             8 -> tiePair h1 h2
             _ -> highestRank h1 h2
 
-
     --Tie breaker funcs
     highestRank h1 h2 = do
          let aceLowH1 = map (\x -> if value x == 12 then x -12 else x+1) h1
          let aceLowH2 = map (\x -> if value x == 12 then x -12 else x+1) h2
-         if (isStraight h1 && not(isRoyalFlush h1)) then  map (\x -> if value x == 0 then x +12 else x-1) (highRankHelper aceLowH1 aceLowH2)
+         if isStraight h1 && (containsValueWithFunc h2 11 value) && (containsValueWithFunc h1 11 value) then (highRankHelper h1 h2)
+         else if (isStraight h1 && not(containsValueWithFunc h1 11 value) && (containsValueWithFunc h2 11 value) ) then h2
+         else if (isStraight h1 && not(containsValueWithFunc h2 11 value) && (containsValueWithFunc h1 11 value) ) then h1
+         else if (isStraight h1 && not(isRoyalFlush h1)) then  map (\x -> if value x == 0 then x +12 else x-1) (highRankHelper aceLowH1 aceLowH2)
          else highRankHelper h1 h2
 
     highRankHelper h1 h2 = highestRankRev ((reverse) h1) ((reverse) h2) ((reverse) h1) ((reverse) h2)
