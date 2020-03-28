@@ -87,7 +87,7 @@ module Poker where
 
     isStraight hand = do
         let aceLow = map (\x -> if value x == 12 then x -12 else x+1) hand
-        (isStraightCheck2 (tail hand) (head hand) || isStraightCheck2 (tail aceLow) (head aceLow) )
+        (isStraightCheck hand || isStraightCheck aceLow )
         
     --isStraight sub method
     isStraightCheck hand = do
