@@ -112,7 +112,7 @@ module Poker where
         | elementRepeatExact hand (hand !! tempIndex) func number = do
             let filteredHand = removeAllCardsByFaceValue hand (hand !! tempIndex) []
             anyElementRepeats filteredHand value 2 0
-        | otherwise = anyElementRepeats hand func number (tempIndex+1)
+        | otherwise = isDoublePairHelper hand func number (tempIndex+1)
 
     isSinglePair hand = anyElementRepeats hand value 2 0
     ---------------Helper functions-------------------
