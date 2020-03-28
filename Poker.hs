@@ -87,8 +87,8 @@ module Poker where
 
     isStraight hand = do
         let aceLow = map (\x -> if value x == 12 then x -12 else x+1) hand
-        if(isStraightCheck hand || isStraightCheck aceLow ) then True
-        else False
+        (isStraightCheck hand || isStraightCheck aceLow )
+        
     --isStraight sub method
     isStraightCheck hand = do
         let handByValue = sortHandByMethod hand [] sortByValueFirst
@@ -112,7 +112,7 @@ module Poker where
         | elementRepeatExact hand (hand !! tempIndex) func number = do
             let filteredHand = removeAllCardsByFaceValue hand (hand !! tempIndex) []
             anyElementRepeats filteredHand value 2 0
-        | otherwise = anyElementRepeats hand func number (tempIndex+1)
+        | otherwise = isDoublePairHelper hand func number (tempIndex+1)
 
     isSinglePair hand = anyElementRepeats hand value 2 0
     ---------------Helper functions-------------------
@@ -214,6 +214,11 @@ module Poker where
          else if (isStraight h1 && not(isRoyalFlush h1)) then  map (\x -> if value x == 0 then x +12 else x-1) (highRankHelper aceLowH1 aceLowH2)
          else highRankHelper h1 h2
 
+    compareNormalStraight hand1 hand2 = do
+        let hand1Shift = if ( containsValueWithFunc hand1 11 value ) then hand1 else map (\x -> if value x == 12 then x -12 else x+1) hand1
+        let hand2Shift = if ( containsValueWithFunc hand2 11 value ) then hand2 else map (\x -> if value x == 12 then x -12 else x+1) hand2
+        (hand1Shift, hand2Shift)
+    
     highRankHelper h1 h2 = highestRankRev ((reverse) h1) ((reverse) h2) ((reverse) h1) ((reverse) h2)
 
     highestRankRev h1 h2 a b= do
