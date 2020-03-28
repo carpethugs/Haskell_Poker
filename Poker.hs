@@ -237,7 +237,7 @@ module Poker where
 
     --Works for threepair, four of a kind and full house
     tieThreePlus h1 h2 = do 
-        if (h1 !! 2) > (h2 !! 2) then h1
+        if (value(h1 !! 2)) > (value(h2 !! 2)) then h1
         else h2
     
     tieTwoPairs h1 h2 = do
