@@ -87,8 +87,8 @@ module Poker where
 
     isStraight hand = do
         let aceLow = map (\x -> if value x == 12 then x -12 else x+1) hand
-        if(isStraightCheck hand || isStraightCheck aceLow ) then True
-        else False
+        (isStraightCheck2 (tail hand) (head hand) || isStraightCheck2 (tail aceLow) (head aceLow) )
+        
     --isStraight sub method
     isStraightCheck hand = do
         let handByValue = sortHandByMethod hand [] sortByValueFirst
@@ -98,7 +98,12 @@ module Poker where
         | null hand = True
         | not (value ((head) hand) == ((value) desFrom) - 1) = False  
         | otherwise = isDescendingFrom ((tail) hand) ((head) hand)
-    
+
+    isStraightCheck2 hand val= do
+        if null hand then True
+        else if ((head) hand) == (val+1) then isStraightCheck2 (sortByVal (tail hand)) ((head) hand)
+        else False
+
     isFourOfAKind hand = anyElementRepeats hand value 4 0 --the 4 because looking for a four of a kind
 
     isFullHouse hand = anyElementRepeats hand value 3 0 && anyElementRepeats hand value 2 0
