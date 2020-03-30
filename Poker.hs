@@ -1,3 +1,7 @@
+--Authors:
+--Calvin Mozola
+--Daniel Mezhibovski
+
 module Poker where
     import Data.List
     
